@@ -23,11 +23,78 @@
    	end
 10. bundle install --without production	
 
+GITHUB SETUP
 11. Go to GitHub and create new github repository.	
 12. git remote add origin https://github.com/--/--.git
 13. git push -u origin master
 
+HEROKU SETUP
 14. heroku create
 15. heroku rename norwegimo-photo-app
+16. git status - check to see if any
+17. git add -A
+18. git commit -m "Make production ready"
+19. git push
+20. git push heroku master
 
-																																				
+AUTHENTICATION SETUP
+21. Add gem 'devise' if not already there.
+22. Add gem 'twitter-bootstrap-rails'
+23. Add gem 'devise-bootstrap-views'
+24. bundle install --without production
+
+- DEVISE SETUP
+25. rails generate devise:install
+26. rails generate devise user
+
+ADDING CONFIRMABLEs
+27. Open migration file
+	- db/migrate/--	
+	- uncomment the ## Confirmable
+28. Open models/user.rb
+	- after :registerable ADD :confirmable,	
+29. rake db:migrate
+30. rails s -b 0.0.0.0	
+31. Open controllers/application_controller.rb
+	- Add before_action :authenticate_user!
+32. Refresh Localhost 3000 it's going to bring up signin.
+33. Add following to not have signin on welcome page.
+	- skip_before_action :authenticate_user!, only: [:index]	
+
+ADD STYLING
+34. rails generate bootstrap:install static
+35. rails generate bootstrap:layout application (Y)
+36. rails g devise:views:locale en (I ended up having to copy the file due to SSL cert errors)
+	- https://github.com/tigrish/devise-i18n/blob/master/rails/locales/en.yml
+	- to config/locales/en.yml
+37. rails g devise:views:bootstrap_templates
+38. Open assets/stylesheets/application.css
+	- Add *= require devise_bootstrap_views
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+																																	
