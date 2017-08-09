@@ -1,0 +1,6 @@
+1. rails new photo-app
+2. cd photo-app
+3. rails s -b 0.0.0.0
+4. rails generate controller welcome index - Setup home page. (controller, view, route)
+5. Route file - root 'welcome#index'
+6. views/welcome/index.html.erb - Change to <h1>Welcome to Photo App</h1>
