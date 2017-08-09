@@ -1,6 +1,33 @@
 1. rails new photo-app
 2. cd photo-app
 3. rails s -b 0.0.0.0
-4. rails generate controller welcome index - Setup home page. (controller, view, route)
+4. rails generate controller welcome index 
+	- Setup home page. (controller, view, route)
 5. Route file - root 'welcome#index'
-6. views/welcome/index.html.erb - Change to <h1>Welcome to Photo App</h1>
+6. views/welcome/index.html.erb 
+	- Change to <h1>Welcome to Photo App</h1>
+7. Intialize Git Repository
+	- git init
+	- git add -A
+	- git commit -m "Initial commit with home page"
+8. Pull up Gemfile
+	- move gem 'sqlite3' below 
+	  group :development, : test do
+9. Add to bottom of Gemfile
+	group :production do
+  
+	  gem 'pg'
+  
+	  gem 'rails_12factor'
+
+   	end
+10. bundle install --without production	
+
+11. Go to GitHub and create new github repository.	
+12. git remote add origin https://github.com/--/--.git
+13. git push -u origin master
+
+14. heroku create
+15. heroku rename norwegimo-photo-app
+
+																																				
