@@ -71,11 +71,50 @@ ADD STYLING
 38. Open assets/stylesheets/application.css
 	- Add *= require devise_bootstrap_views
 
+ADD SENDGRID (email verification via Heroku)
+39. heroku addons:create sendgrid:starter (need to have verfied CC with Heroku) - free service 450 emails a day
+40. Open heroku go to photo-app
+	- Select Resouces
+	- Select Sendgrid (sends you to Sendgrid account)
+	- heroku config:set SENDGRID_USERNAME=app74529421@heroku.com
+	- heroku config:set SENDGRID_PASSWORD=rudtwpgt9035
+		To find username and password goto heroku app settings reveal config-vars
 
+****************can't find hidden file .zshrc to update***************** 
+		- export SENDGRID_USERNAME=
+		- export SENDGRID_PASSWORD=
 
+41. Open config/environment.rb
+	ActionMailer::Base.smtp_settings = {
+  
+	  :address => 'smtp.sendgrid.net',
+  
+	  :port => '587',
+  
+	  :authentication => :plain,
+  	
+	  :user_name => ENV['SENDGRID_USERNAME'],
+  
+	  :password => ENV['SENDGRID_PASSWORD'],
+  
+	  :domain => 'heroku.com',
+  
+	  :enable_starttls_auto => true
+	
+	
+}	
 
+42. Open config/environments/development.rb
+	- config.action_mailer.delivery_method = :test
+  
+	- config.action_mailer.default_url_options = { :host => 'http://localhost:3000'}
+	 
+43. Open config/environments/development.rb
+	- config.action_mailer.delivery_method = :smtp
+  
+	- config.action_mailer.default_url_options = { :host => 'norwegimo-photo-app.herokuapp.com', :protocol => 'https'}
 
-
+API KEY: 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
 
 
 
