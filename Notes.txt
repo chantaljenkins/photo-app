@@ -116,9 +116,112 @@ ADD SENDGRID (email verification via Heroku)
 
 API KEY: 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
 
+44. Start rails server
+	- 3000/users/sign_up
+	- sign up 
+	- receive message saying confirmation link has been sent to email.
+	- since this is in the test environment it is sent to the server
+	- copy the link ie - http://localhost:3000/users/confirmation?confirmation_token=eYFHL_JZXHxt3oHJN8dE&amp;locale=en
+	- you should receive message your email address has been confirmed.
 
+UPDATE NAVIGATION
 
+45. Open views/layouts/application.html.erb
+	- get rid of sidebar.
+	- add following after UL in nav:
+<ul class="nav navbar-right col-md-4">
+            
+ <% if current_user %>
+            
+  <li class="col-md-8 user-name">
+              
+   <%= link_to ('<i class="fa fa-user"></i> ' + truncate(current_user.email,length: 25)).html_safe,edit_user_registration_path,
+title: 'Edit Profile' %>
 
+  </li>
+            
+  <li class="col-md-1"> </li>
+
+  <li class="col-md-3 logout">
+   <%= link_to('Logout', destroy_user_session_path,
+class: 'btn btn-xs btn-danger',title: 'Logout',:method => :delete) %>
+  </li>
+ <% else %>
+            
+  <li class="col-md-4 pull-right">
+
+   <%= link_to('Sign In', new_user_session_path, class: 'btn btn-primary', title: 'Sign In') %>
+
+  </li>
+            
+ <% end %>
+          
+</ul>
+
+46. Add CSS rules
+
+.user-name {
+  padding: 0 !important ;
+  padding-left: 5px;
+  padding-top: 15px !important;
+  text-align: center;
+
+  a {
+    color: black !important;
+    margin: 0 !important;
+    padding: 5px!important;
+  }
+
+  a:hover, a:focus {
+  color: #000 !important;
+  }
+}
+
+.logout {
+  padding-left: 0;
+}
+
+.nav.navbar-right {
+  padding-bottom: 10px;
+  padding-top: 5px;
+}
+
+.nav.navbar-nav {
+  .navbar-link {
+    border-radius: 5px;
+    color: #fff;
+    margin-top: 15px;
+    padding: 8px;
+  }
+
+  .navbar-link:focus, .navbar-link:hover {
+    background: #3071a9;
+    color: #fff;
+  }
+
+  li a {
+    margin-right: 5px;
+  }
+}
+
+.nav.navbar-right li {
+  .btn {
+    color: #fff !important;
+    margin-top: 5%;
+  }
+
+  .btn-danger:hover, .btn-danger:focus {
+    background-color: darken(#d9534f,20%) !important;
+  }
+
+  .btn-primary:hover, .btn-primary:focus {
+    background-color: darken(#428bca,20%) !important;
+  }
+}
+
+.btn-primary:visited, .btn-danger:visited {
+  color: #fff;
+}
 
 
 
