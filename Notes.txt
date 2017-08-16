@@ -77,7 +77,7 @@ ADD SENDGRID (email verification via Heroku)
 	- Select Resouces
 	- Select Sendgrid (sends you to Sendgrid account)
 	- heroku config:set SENDGRID_USERNAME=app74529421@heroku.com
-	- heroku config:set SENDGRID_PASSWORD=rudtwpgt9035
+	- heroku config:set SENDGRID_PASSWORD=****************
 		To find username and password goto heroku app settings reveal config-vars
 
 ****************can't find hidden file .zshrc to update***************** 
@@ -114,7 +114,7 @@ ADD SENDGRID (email verification via Heroku)
   
 	- config.action_mailer.default_url_options = { :host => 'norwegimo-photo-app.herokuapp.com', :protocol => 'https'}
 
-
+	
 
 44. Start rails server
 	- 3000/users/sign_up
