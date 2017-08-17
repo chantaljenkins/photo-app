@@ -23,57 +23,78 @@
    	end
 10. bundle install --without production	
 
+------------
 GITHUB SETUP
-11. Go to GitHub and create new github repository.	
-12. git remote add origin https://github.com/--/--.git
-13. git push -u origin master
+------------
 
+1. Go to GitHub and create new github repository.	
+2. git remote add origin https://github.com/--/--.git
+3. git push -u origin master
+
+------------
 HEROKU SETUP
-14. heroku create
-15. heroku rename norwegimo-photo-app
-16. git status - check to see if any
-17. git add -A
-18. git commit -m "Make production ready"
-19. git push
-20. git push heroku master
+------------
 
+1. heroku create
+2. heroku rename norwegimo-photo-app
+3. git status - check to see if any
+4. git add -A
+5. git commit -m "Make production ready"
+6. git push
+7. git push heroku master
+
+--------------------
 AUTHENTICATION SETUP
-21. Add gem 'devise' if not already there.
-22. Add gem 'twitter-bootstrap-rails'
-23. Add gem 'devise-bootstrap-views'
-24. bundle install --without production
+--------------------
 
-- DEVISE SETUP
-25. rails generate devise:install
-26. rails generate devise user
+1. Add gem 'devise' if not already there.
+2. Add gem 'twitter-bootstrap-rails'
+3. Add gem 'devise-bootstrap-views'
+4. bundle install --without production
 
+------------
+DEVISE SETUP
+------------
+
+1. rails generate devise:install
+2. rails generate devise user
+
+-------------------
 ADDING CONFIRMABLEs
-27. Open migration file
+-------------------
+
+1. Open migration file
 	- db/migrate/--	
 	- uncomment the ## Confirmable
-28. Open models/user.rb
+2. Open models/user.rb
 	- after :registerable ADD :confirmable,	
-29. rake db:migrate
-30. rails s -b 0.0.0.0	
-31. Open controllers/application_controller.rb
+3. rake db:migrate
+4. rails s -b 0.0.0.0	
+5. Open controllers/application_controller.rb
 	- Add before_action :authenticate_user!
-32. Refresh Localhost 3000 it's going to bring up signin.
-33. Add following to not have signin on welcome page.
+6. Refresh Localhost 3000 it's going to bring up signin.
+7. Add following to not have signin on welcome page.
 	- skip_before_action :authenticate_user!, only: [:index]	
 
+-----------
 ADD STYLING
-34. rails generate bootstrap:install static
-35. rails generate bootstrap:layout application (Y)
-36. rails g devise:views:locale en (I ended up having to copy the file due to SSL cert errors)
+-----------
+
+1. rails generate bootstrap:install static
+2. rails generate bootstrap:layout application (Y)
+3. rails g devise:views:locale en (I ended up having to copy the file due to SSL cert errors)
 	- https://github.com/tigrish/devise-i18n/blob/master/rails/locales/en.yml
 	- to config/locales/en.yml
-37. rails g devise:views:bootstrap_templates
-38. Open assets/stylesheets/application.css
+4. rails g devise:views:bootstrap_templates
+5. Open assets/stylesheets/application.css
 	- Add *= require devise_bootstrap_views
 
+--------------------------------------------
 ADD SENDGRID (email verification via Heroku)
-39. heroku addons:create sendgrid:starter (need to have verfied CC with Heroku) - free service 450 emails a day
-40. Open heroku go to photo-app
+--------------------------------------------
+
+1. heroku addons:create sendgrid:starter (need to have verfied CC with Heroku) - free service 450 emails a day
+2. Open heroku go to photo-app
 	- Select Resouces
 	- Select Sendgrid (sends you to Sendgrid account)
 	- heroku config:set SENDGRID_USERNAME=app74529421@heroku.com
@@ -84,7 +105,7 @@ ADD SENDGRID (email verification via Heroku)
 		- export SENDGRID_USERNAME=
 		- export SENDGRID_PASSWORD=
 
-41. Open config/environment.rb
+3. Open config/environment.rb
 	ActionMailer::Base.smtp_settings = {
   
 	  :address => 'smtp.sendgrid.net',
@@ -104,19 +125,17 @@ ADD SENDGRID (email verification via Heroku)
 	
 }	
 
-42. Open config/environments/development.rb
+4. Open config/environments/development.rb
 	- config.action_mailer.delivery_method = :test
   
 	- config.action_mailer.default_url_options = { :host => 'http://localhost:3000'}
 	 
-43. Open config/environments/development.rb
+5. Open config/environments/development.rb
 	- config.action_mailer.delivery_method = :smtp
   
 	- config.action_mailer.default_url_options = { :host => 'norwegimo-photo-app.herokuapp.com', :protocol => 'https'}
 
-	
-
-44. Start rails server
+6. Start rails server
 	- 3000/users/sign_up
 	- sign up 
 	- receive message saying confirmation link has been sent to email.
@@ -124,14 +143,16 @@ ADD SENDGRID (email verification via Heroku)
 	- copy the link ie - http://localhost:3000/users/confirmation?confirmation_token=eYFHL_JZXHxt3oHJN8dE&amp;locale=en
 	- you should receive message your email address has been confirmed.
 
+-----------------
 UPDATE NAVIGATION
+-----------------
 
-45. Open views/layouts/application.html.erb
+1. Open views/layouts/application.html.erb
 	- get rid of sidebar.
 	- add following after UL in nav:
 <ul class="nav navbar-right col-md-4">
             
- <% if current_user %>
+<% if current_user %>
             
   <li class="col-md-8 user-name">
               
@@ -158,7 +179,7 @@ class: 'btn btn-xs btn-danger',title: 'Logout',:method => :delete) %>
           
 </ul>
 
-46. Add CSS rules
+2. Add CSS rules
 
 .user-name {
   padding: 0 !important ;
@@ -223,14 +244,14 @@ class: 'btn btn-xs btn-danger',title: 'Logout',:method => :delete) %>
   color: #fff;
 }
 
-47. Commit and Git push and Heroku push master.
-48. heroku run rake db:migrate
+3. Commit and Git push and Heroku push master.
+4. heroku run rake db:migrate
 
-49. Test in production (Heroku)
+5. Test in production (Heroku)
 	-create new user to REAL email.
 	-you can check heroku log (if you want to see before email is received).
 
-50. To change confirmation email from address name:
+6. To change confirmation email from address name:
 	-config/initializers/devise.rb
 	-config.mailer_sender = 'donot-reply@example.com'
 
@@ -423,7 +444,7 @@ CREATE MODEL PAYMENT
 	
 	def process_payment
     
-	  customer = Stripe::Customer.create email: email, card: tokens
+	  customer = Stripe::Customer.create email: email, card: token
 
     
 	  Stripe::Charge.create customer: customer.id,
@@ -574,13 +595,66 @@ $(document).ready(fucntion (){
     };
 })	
 
+-------------------------------------
+ADD REGISTRATIONS CONTROLLER (DEVISE)
+-------------------------------------	
+
+1. Create new registrations controller file 
+	- controllers/registrations_controller.rb
 
 
+class RegisttrationsController < Devise::RegistrationsController
+  def create
+    build_resource(sign_up_params)
 
+    resource.class.transaction do
+      resource.save
+      yield resource if block_given?
+      if resource.persisted?
+        @payment = Payment.new({ email: params["user"]["email"],
+          token: params[:payment]["token"], user_id: resource.id })
 
+        flash[:error] = "Please check registration errors" unless @payment.valid?
 
+        begin
+          @payment.process_payment
+          @payment.save
+        rescue Exception => e
+          flash[:error] = e.message
 
+          resource.destroy
+          puts 'Payment failed'
+          render :new and return
+        end
 
+        if resource.active_for_authentication?
+          set_flash_message! :notice, :signed_up
+          sign_up(resource_name, resource)
+          respond_with resource, location: after_sign_up_path_for(resource)
+        else
+          set_flash_message! :notice, :"signed_up_but_#{resource.inactive_message}"
+          expire_data_after_sign_in!
+          respond_with resource, location: after_inactive_sign_up_path_for(resource)
+        end
+      else
+        clean_up_passwords resource
+        set_minimum_password_length
+        respond_with resource
+      end
+    end
+  end
+  protected
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.for(:sign_up).push(:payment)
+  end	
+end
+
+2. add to config/routes.rb
+	to the devise_for :users add the following:
+	devise_for :users, :controllers => { :registrations => 'registrations' }
+
+3. Start server and test.
 
 
 
