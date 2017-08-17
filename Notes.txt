@@ -374,12 +374,136 @@ h2 {
 
 
 
+---------------
+STRIPE SETUP
+---------------
 
+1. Open an account (very straight forward).
+2. Add gem 'stripe' to Gemfile.
+3. bundle install --without production
+4. config/initializers/stripe.rb (create file)
+	Rails.configuration.stripe = {
+	  :publishable_key => ENV['STRIPE_TEST_PUBLISHABLE_KEY'],
+  	  :secret_key      => ENV['STRIPE_TEST_SECRET_KEY']
+        }
+	Stripe.api_key = Rails.configuration.stripe[:secret_key]
 
+5. heroku config:set STRIPE_TEST_SECRET_KEY=****************
+   heroku config:set STRIPE_TEST_PUBLISHABLE_KEY=************
+6. Open new terminal window to make sure all changes are in.
 
+--------------------
+CREATE MODEL PAYMENT
+--------------------
 
+1. rails generate model Payment email:string token:string user_id:integer	
+2. rake db:migrate
+3. make associations 
+	models/user.rb
+	ADD:
+	- has_one :payment
+	- accepts_nested_attributes_for :payment
+	
+	models/payment.rb
+	ADD:
+	- attr_accessor :card_number, :card_cvv, :card_expires_month, :card_expires_year
+	- belongs_to :user
+	
+	def self.month_options
+    
+	  Date::MONTHNAMES.compact.each_with_index.map { |name, i| ["#{i+1} - #{name}", i+1]}
+  
+        end 
+	
+	def self.year_options
+    
+	  (Date.today.year..(Date.today.year+10)).to_a
+  
+	end
+	
+	def process_payment
+    
+	  customer = Stripe::Customer.create email: email, card: tokens
 
+    
+	  Stripe::Charge.create customer: customer.id,
 
+                          amount: 1000,
 
+                          description: 'Premium',
 
-																																	
+                          currency: 'usd'
+
+        end
+	
+
+---------------------------
+ADD FIELDS TO SIGN UP FORM
+---------------------------
+
+1. views/devise/registrations/new.html.erb
+	-between the password confirmation and the submit button.
+
+      <%= fields_for( :payment) do |p| %>
+        
+	<div class="row col-md-12">
+          
+	  <div class="form-group col-md-4 no-left-padding">
+            
+	    <%= p.label :card_number, "Card Number", data: { stripe: 'label'} %>
+            
+	    <%= p.text_field :card_number, class: "form-control", required: true, data: { stripe: 'number'} %>
+          
+	  </div>
+          
+	  <div class="form-group col-md-2">
+            
+	    <%= p.label :card_CVV, "Card CVV", data: { stripe: 'label'} %>
+            
+	    <%= p.text_field :card_CVV, class: "form-control", required: true, data: { stripe: 'CVV'} %>
+          
+	  </div>
+          
+	  <div class="form-group col-md-6 ">
+            
+	    <div class="col-md-12">
+              
+	      <%= p.label :card_expires, "Card Expires", data: { stripe: 'label'} %>
+            
+	    </div>
+            
+	  <div class="col-md-3">
+              
+	    <%= p.select :card_expires_month, options_for_select(Payment.month_options),
+                          
+	                 { include_blank: 'Month'},
+                          
+	                 "data-stripe" => "exp-month",
+                          
+	                 class: "form-control", required: true %>
+            
+	  </div>
+            
+	  <div class="col-md-3">
+              
+	    <%= p.select :card_expires_year, options_for_select(Payment.year_options.push),
+                          
+	                 { include_blank: 'Year'},
+                          
+	                 class: "form-control",
+                          
+	                 data: { stripe: "exp-year" },
+                          
+	                 required: true %>
+            
+	  </div>
+          
+	</div>
+        
+      </div>
+      
+      <% end %>
+
+----------------------------------------------
+JAVASCRIPT FOR CC INFO HANDLING AND SUBMISSION
+----------------------------------------------																																
